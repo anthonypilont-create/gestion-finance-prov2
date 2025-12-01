@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion Finance Pro</title>
+<style>
+    body { 
+        font-family: Arial, sans-serif; 
+        background: #0a0f24; 
+        color: white; 
+        margin: 0; 
+        padding: 20px;
+    }
+    h1 { text-align: center; }
+    .box {
+        background: rgba(255,255,255,0.08);
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+    }
+    label { display: block; margin-top: 10px; }
+    input, select {
+        width: 100%; padding: 10px;
+        margin-top: 5px; border-radius: 8px;
+        border: none;
+    }
+    button {
+        width: 100%; padding: 12px; margin-top: 15px;
+        background: #28a745; border: none; 
+        border-radius: 8px; color: white;
+        font-size: 16px; font-weight: bold;
+    }
+</style>
+</head>
+
+<body>
+
+<h1>Gestion Finance Pro</h1>
+
+<div id="loginBox" class="box">
+    <h2>Créer un mot de passe</h2>
+    <p>Choisis un mot de passe pour protéger tes données.</p>
+
+    <label>Mot de passe</label>
+    <input type="password" id="pass1">
+
+    <label>Confirme le mot de passe</label>
+    <input type="password" id="pass2">
+
+    <button onclick="savePassword()">Continuer</button>
+</div>
+
+<div id="appBox" style="display:none">
+
+    <div class="box">
+        <h2>Ajouter une transaction</h2>
+
+        <label>Date</label>
+        <input type="date" id="date">
+
+        <label>Type</label>
+        <select id="type">
+            <option value="revenu">Revenu</option>
+            <option value="depense">Dépense</option>
+        </select>
+
+        <label>Montant ($)</label>
+        <input type="number" id="montant">
+
+        <label>Catégorie</label>
+        <input type="text" id="categorie" placeholder="Épicerie, Salaire, Cadeau…">
+
+        <button onclick="addTransaction()">Ajouter</button>
+    </div>
+
+    <div class="box">
+        <h2>Solde total : <span id="solde">0.00</span> $</h2>
+    </div>
+
+    <div class="box">
+        <h2>Historique</h2>
+        <div id="historique"></div>
+    </div>
+</div>
+
+<script>
+let data = JSON.parse(localStorage.getItem("gfp-data") || "[]");
+let password = localStorage.getItem("gfp-pass");
+
+// Vérifie si un mot de passe existe déjà
+if (password) {
+    document.getElementById("loginBox").innerHTML = `
+        <h2>Entrer votre mot de passe</h2>
+        <input type="password" id="passLogin">
+        <button onclick="checkPassword()">Entrer</button>
+    `;
+}
+
+function savePassword() {
+    let p1 = document.getElementById("pass1").value;
+    let p2 = document.getElementById("pass2").value;
+
+    if (p1.length < 3) return alert("Mot de passe trop court.");
+    if (p1 !== p2) return alert("Les mots de passe ne correspondent pas.");
+
+    localStorage.setItem("gfp-pass", p1);
+    showApp();
+}
+
+function checkPassword() {
+    let p = document.getElementById("passLogin").value;
+    if (p === localStorage.getItem("gfp-pass")) {
+        showApp();
+    } else {
+        alert("Mot de passe incorrect.");
+    }
+}
+
+function showApp() {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("appBox").style.display = "block";
+    update();
+}
+
+function addTransaction() {
+    let item = {
+        date: document.getElementById("date").value,
+        type: document.getElementById("type").value,
+        montant: parseFloat(document.get
