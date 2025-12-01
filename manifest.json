@@ -1,13 +1,11 @@
 {
   "name": "Gestion Finance Pro",
-  "short_name": "FinancePro",
-  "description": "Application sécurisée pour gérer tes revenus, dépenses, catégories et historiques.",
+  "short_name": "Finance Pro",
+  "description": "Application sécurisée pour gérer tes revenus et dépenses",
   "start_url": "/gestion-finance-prov2/",
-  "scope": "/gestion-finance-prov2/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#1a73e8",
-  "orientation": "portrait",
+  "theme_color": "#000000",
   "icons": [
     {
       "src": "icon-192.png",
